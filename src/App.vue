@@ -1,23 +1,24 @@
 <template>
-  <form @submit="submit">
+  <form>
     <div>
       <label>Activités</label>
-      <button type="button">Ajouter une activité</button>
+      <button @click="push()" type="button">Ajouter une activité</button>
     </div>
-    <button>Envoi</button>
+    <div :key="field.key" v-for="{ field, i } in fields">
+      <Field :name="`hobbies[${i}]`" />
+    </div>
+    <pre>{{ values }}</pre>
   </form>
 </template>
 
 <script setup lang="ts">
-import { useFieldArray, useForm } from 'vee-validate';
+import { useForm, useFieldArray, Field } from 'vee-validate';
 import { z } from 'zod';
 import { toFieldValidator } from '@vee-validate/zod';
 
-const { handleSubmit, values } = useForm();
+const { values } = useForm;
 
-const submit = handleSubmit(() => {});
-
-const { value: cityValue, errorMessage } = useFieldArray('address.city');
+const { value: cityValue, push } = useFieldArray('address.city');
 </script>
 
 <style scoped lang="scss"></style>
