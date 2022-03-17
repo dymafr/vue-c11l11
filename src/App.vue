@@ -2,10 +2,26 @@
   <form>
     <div>
       <label>Activités</label>
-      <button @click="push()" type="button">Ajouter une activité</button>
+      <div>
+        <button @click="push()" type="button">Ajouter une activité</button>
+      </div>
     </div>
-    <div :key="field.key" v-for="{ field, i } in fields">
-      <Field :name="`hobbies[${i}]`" />
+    <div v-for="(field, i) in fields" :key="field.key">
+      <Field :name="`hobbies[${i}].name`" v-slot="{ field, errorMessage }">
+        <input v-bind="field" type="text" />
+        <p>{{ errorMessage }}</p>
+      </Field>
+      <Field :name="`hobbies[${i}].good`" v-slot="{ field }">
+        <div>
+          <input v-bind="field" type="radio" :value="true" />
+          <label>Good</label>
+        </div>
+        <div>
+          <input v-bind="field" type="radio" :value="false" />
+          <label>False</label>
+        </div>
+      </Field>
+      <button @click="remove(i)">x</button>
     </div>
     <pre>{{ values }}</pre>
   </form>
@@ -14,11 +30,25 @@
 <script setup lang="ts">
 import { useForm, useFieldArray, Field } from 'vee-validate';
 import { z } from 'zod';
-import { toFieldValidator } from '@vee-validate/zod';
+import { toFormValidator } from '@vee-validate/zod';
+
+const validationSchema = toFormValidator(
+  z.object({
+    hobbies: z
+      .array(
+        z.object({
+          name: z
+            .string({ required_error: 'obligatoire' })
+            .min(5, { message: 'trop court !' }),
+          comment: z.string(),
+        })
+      )
+      .optionnal(),
+  })
+);
 
 const { values } = useForm();
-
-const { fields, push } = useFieldArray('hobbies');
+const { fields, push, remove } = useFieldArray('hobbies');
 </script>
 
 <style scoped lang="scss"></style>
