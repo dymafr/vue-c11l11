@@ -23,7 +23,9 @@
           <label :for="`bad[${i}]`">Bad</label>
         </div>
       </Field>
-      <button @click="remove(i)">x</button>
+      <button @click="remove(i)">Supprimer</button>
+      <br />
+      <br />
     </div>
     <pre>{{ values }}</pre>
   </form>
@@ -45,7 +47,7 @@ const validationSchema = toFormValidator(
           comment: z.string(),
         })
       )
-      .optionnal(),
+      .optional(),
   })
 );
 
