@@ -16,9 +16,9 @@ import { useForm, useFieldArray, Field } from 'vee-validate';
 import { z } from 'zod';
 import { toFieldValidator } from '@vee-validate/zod';
 
-const { values } = useForm;
+const { values } = useForm();
 
-const { value: cityValue, push } = useFieldArray('address.city');
+const { fields, push } = useFieldArray('hobbies');
 </script>
 
 <style scoped lang="scss"></style>
