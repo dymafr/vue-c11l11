@@ -3,7 +3,9 @@
     <div>
       <label>Activités</label>
       <div>
-        <button @click="push()" type="button">Ajouter une activité</button>
+        <button @click="push({ name: '', good: false })" type="button">
+          Ajouter une activité
+        </button>
       </div>
     </div>
     <div v-for="(field, i) in fields" :key="field.key">
@@ -13,12 +15,12 @@
       </Field>
       <Field :name="`hobbies[${i}].good`" v-slot="{ field }">
         <div>
-          <input v-bind="field" type="radio" :value="true" />
-          <label>Good</label>
+          <input :id="`good[${i}]`" v-bind="field" type="radio" :value="true" />
+          <label :for="`good[${i}]`">Good</label>
         </div>
         <div>
-          <input v-bind="field" type="radio" :value="false" />
-          <label>False</label>
+          <input :id="`bad[${i}]`" v-bind="field" type="radio" :value="false" />
+          <label :for="`bad[${i}]`">Bad</label>
         </div>
       </Field>
       <button @click="remove(i)">x</button>
@@ -47,7 +49,7 @@ const validationSchema = toFormValidator(
   })
 );
 
-const { values } = useForm();
+const { values } = useForm({ validationSchema });
 const { fields, push, remove } = useFieldArray('hobbies');
 </script>
 
